@@ -13,6 +13,7 @@ def create_folders(path: str, folders_name: dict) -> None:
     for folder in folders_name.keys():
         if not os.path.exists(fr'{path}\{folder}'):
             os.mkdir(fr'{path}\{folder}')
+            print(f'Создана папка "{folder}"')
 
 def get_paths_file(path:str) -> list:
     '''Собираем пути к файлам, которые будут отсортированны'''
@@ -29,11 +30,19 @@ def sort_files(path: str):
         for dict_key_int in range(len(ext_list)):
             if extension in ext_list[dict_key_int][1]:
                 os.rename(file_path, f'{current_directory}\\{ext_list[dict_key_int][0]}\\{file_name}')
-                print(f'"{file_name}" скопирован в папку "{ext_list[dict_key_int][0]}"\n')
+                print(f'"{file_name}" скопирован в папку "{ext_list[dict_key_int][0]}"')
+
+def delete_empty_folders(path: str):
+    folders_dir = [folder.path for folder in os.scandir(path) if folder.is_dir()]
+    for p in folders_dir:
+        if len(os.listdir(p)) == 0:
+            os.rmdir(p)
+            print(f'Папка {p} удалена т.к. в ней отсутствовали файлы')
 
 def main():
     create_folders(current_directory, folders_and_extensions)
     sort_files(current_directory)
+    delete_empty_folders(current_directory)
     input('Сортировка окончена\nДля завершения нажмити "Enter"')
 
 if __name__ == "__main__":
