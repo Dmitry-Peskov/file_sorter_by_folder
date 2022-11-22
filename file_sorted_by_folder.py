@@ -21,7 +21,7 @@ def get_paths_file(path:str) -> list:
     return file_list
 
 def sort_files(path: str):
-    '''Производим сортировку файлов по папкам'''
+    '''Производим сортировку файлов по ранее созданным папкам'''
     file_paths = get_paths_file(path)
     ext_list = list(folders_and_extensions.items())
     for file_path in file_paths:
@@ -33,6 +33,7 @@ def sort_files(path: str):
                 print(f'"{file_name}" скопирован в папку "{ext_list[dict_key_int][0]}"')
 
 def delete_empty_folders(path: str):
+    '''Удаляем пустые папки, находящиеся в корневом каталоге'''
     folders_dir = [folder.path for folder in os.scandir(path) if folder.is_dir()]
     for p in folders_dir:
         if len(os.listdir(p)) == 0:
